@@ -46,6 +46,12 @@ with ctx.as_user("u_test"):
     check("Hinglish can be chosen", creators.update(c["id"], {"language": "hinglish"})["language"] == "hinglish")
     check("anything else falls back to English", creators.update(c["id"], {"language": "klingon"})["language"] == "en")
 
+# ---- a plain video (no creator) can be Hinglish too
+from studio import jobs
+check("a video's language can be Hinglish", jobs.clean_options({"language": "hinglish"})["language"] == "hinglish")
+check("...anything else is English", jobs.clean_options({"language": "xx"})["language"] == "en")
+check("videos are English unless chosen", jobs.DEFAULTS["language"] == "en")
+
 print("ALL PASSED" if not fails else f"{len(fails)} failed")
 import shutil; shutil.rmtree(os.environ["PEAKCUT_DATA"], ignore_errors=True)
 sys.exit(1 if fails else 0)
