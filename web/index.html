@@ -2118,6 +2118,7 @@ function drawClipDlg(full) {
         <h3>Post text</h3>
         <label class="f">Title<input data-f="title" value="${esc(c.title)}"></label>
         <label class="f">Description<textarea data-f="description" rows="2">${esc(c.description)}</textarea></label>
+        ${j.credit ? `<small class="sub">Added to every post: ${esc(j.credit)}</small>` : ""}
         <button class="btn" data-act="remake">${ic("scissors")}Save and re-make clip</button>
         <h3>Post it</h3>
         <div id="dposts" class="row" style="gap:4px"></div>
@@ -2283,8 +2284,8 @@ document.addEventListener("click", async e => {
       dlg.returnValue = "no"; return dlg.showModal();
     }
     if (a === "copy") {
-      const c = jobOf(d.j).clips.find(x => x.id === d.c);
-      await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
+      const j = jobOf(d.j), c = j.clips.find(x => x.id === d.c);
+      await navigator.clipboard.writeText([c.title, c.description, j.credit, (c.hashtags || []).map(h => "#" + h).join(" ")].filter(Boolean).join("\n\n")); return toast("Post text copied", "ok");
     }
     if (a === "logout") { await api("/api/auth/logout", {method:"POST"}); location.href = "/"; return; }
     if (a === "pwsave") {

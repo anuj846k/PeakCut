@@ -105,13 +105,18 @@ def credit(creator, uploader=""):
     return f"🎥 Credit: {who}" if who else ""
 
 
+def credit_line(creator, uploader=""):
+    """The credit line a post will carry: empty when turned off, or when the footer already names them."""
+    line = credit(creator, uploader) if creator.get("post_credit", True) else ""
+    if line and line.split(": ", 1)[-1].split(" ")[0].lower() in creator.get("post_footer", "").lower():
+        return ""
+    return line
+
+
 def _caption(clip, creator, uploader=""):
     tags = " ".join("#" + h for h in clip.get("hashtags", []))
-    footer = creator.get("post_footer", "")
-    line = credit(creator, uploader) if creator.get("post_credit", True) else ""
-    if line and line.split(": ", 1)[-1].split(" ")[0].lower() in footer.lower():
-        line = ""   # the footer already names them
-    return "\n\n".join(x for x in (clip.get("description", ""), line, tags, footer) if x)
+    line = credit_line(creator, uploader)
+    return "\n\n".join(x for x in (clip.get("description", ""), line, tags, creator.get("post_footer", "")) if x)
 
 
 def _post(p):

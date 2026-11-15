@@ -25,6 +25,12 @@ check("turned off: no credit line", "Credit" not in posting._caption(clip, off),
 old = {k: v for k, v in yt.items()}
 check("creators saved before the setting existed are credited", "@TypicalGamer" in posting._caption(clip, old))
 
+# ---- the page shows the same line the post will carry
+from studio import jobs
+job = {"id": "j1", "creator": None, "uploader": "CarryisLive", "source": {"type": "url"}, "clips": [], "status": "done"}
+check("a video with no creator shows its channel as the credit", jobs.public(job)["credit"] == "🎥 Credit: CarryisLive", jobs.public(job).get("credit"))
+check("the page and the post agree", posting.credit_line(yt) == "🎥 Credit: @TypicalGamer" and posting.credit_line(off) == "")
+
 print("ALL PASSED" if not fails else f"{len(fails)} failed")
 import shutil; shutil.rmtree(os.environ["PEAKCUT_DATA"], ignore_errors=True)
 sys.exit(1 if fails else 0)
