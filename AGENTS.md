@@ -23,6 +23,7 @@ A short map for contributors and AI coding assistants.
 | `studio/jobs.py` | The video pipeline and the fair queue |
 | `studio/live.py` | Live recording and clipping |
 | `studio/transcribe.py`, `studio/asr_worker.py` | Speech to text, here or on a second machine |
+| `studio/sarvam_asr.py` | Speech to text for Hindi and Hinglish creators, through Sarvam AI |
 | `studio/render.py` | Cutting, layouts and captions (ffmpeg and Pillow) |
 | `studio/media.py` | Downloading (yt-dlp), probing, audio |
 | `studio/auth.py`, `studio/account.py`, `studio/admin.py` | Sign-in, deleting things, the admin dashboard |

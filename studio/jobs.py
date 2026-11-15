@@ -468,6 +468,7 @@ def _run_job(job):
     t0 = time.time()
     notes = []
     usage.set_context(job["creator"], job["title"] or src.get("name"))
+    lang = (creators.get(job["creator"]) or {}).get("language", "en") if job.get("creator") else "en"
     resuming = bool(job.pop("resume", False)) and (d / "words.json").is_file()
     if resuming:   # after a restart: keep the transcript parts, clips and AI answers already made, and carry on
         _set(job, status="running", stage="Picking up where it stopped", error=None)
@@ -600,7 +601,7 @@ def _run_job(job):
                 if now_on[0] == i and p - last[0] > 0.05:      # only the part being shown moves the bar
                     last[0] = p
                     _set(job, progress=max(job["progress"], 0.14 + 0.78 * ((a_ - lo) + p * (b_ - a_)) / max(1, hi - lo)))
-            heard[i] = ahead.submit(ctx.bind(transcribe.transcribe), audio[a_:b_], tp)
+            heard[i] = ahead.submit(ctx.bind(transcribe.transcribe), audio[a_:b_], tp, lang)
 
     for bi, (a, b) in enumerate(blocks):
         if bi < done_blocks:
