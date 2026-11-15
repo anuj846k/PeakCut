@@ -55,6 +55,7 @@ def main() -> int:
                 ("Hindi and Urdu captions in Roman letters", ["tests/test_roman.py"]),
                 ("Hindi and Hinglish speech through Sarvam AI", ["tests/test_sarvam.py"]),
                 ("connecting YouTube, Instagram and TikTok", ["tests/test_connect.py"]),
+                ("every post credits the streamer", ["tests/test_credit.py"]),
                 ("the new-version notice", ["tests/test_updates.py"]),
                 ("no limits by default", ["tests/test_limits.py"])]
         for name, args in runs:
