@@ -108,7 +108,7 @@ def credit(creator, uploader=""):
 def _caption(clip, creator, uploader=""):
     tags = " ".join("#" + h for h in clip.get("hashtags", []))
     footer = creator.get("post_footer", "")
-    line = credit(creator, uploader)
+    line = credit(creator, uploader) if creator.get("post_credit", True) else ""
     if line and line.split(": ", 1)[-1].split(" ")[0].lower() in footer.lower():
         line = ""   # the footer already names them
     return "\n\n".join(x for x in (clip.get("description", ""), line, tags, footer) if x)

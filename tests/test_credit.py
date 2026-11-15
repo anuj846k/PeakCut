@@ -20,6 +20,11 @@ check("...with the hashtags after it", cap.endswith("#gta6 #vicecity"), cap)
 foot = dict(yt, post_footer="🎥 Clip from @TypicalGamer, watch the full stream")
 check("not repeated when the footer already names them", posting._caption(clip, foot).count("@TypicalGamer") == 1, posting._caption(clip, foot))
 
+off = dict(yt, post_credit=False)
+check("turned off: no credit line", "Credit" not in posting._caption(clip, off), posting._caption(clip, off))
+old = {k: v for k, v in yt.items()}
+check("creators saved before the setting existed are credited", "@TypicalGamer" in posting._caption(clip, old))
+
 print("ALL PASSED" if not fails else f"{len(fails)} failed")
 import shutil; shutil.rmtree(os.environ["PEAKCUT_DATA"], ignore_errors=True)
 sys.exit(1 if fails else 0)
